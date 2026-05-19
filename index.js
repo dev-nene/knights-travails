@@ -19,5 +19,28 @@ function getMoves(position) {
   return validMoves;
 }
 
-console.log(getMoves([0, 0]));
-console.log(getMoves([3, 3]));
+function knightMoves(start, end) {
+  if (start.toString() === end.toString()) {
+    return [start];
+  }
+
+  const queue = [];
+  queue.push([start, [start]]);
+  const visited = new Set();
+  visited.add(start.toString());
+  while (queue.length > 0) {
+    const [move, path] = queue.shift();
+    const validMoves = getMoves(move);
+    for (const nextMove of validMoves) {
+      if (nextMove.toString() === end.toString()) {
+        return [...path, nextMove];
+      }
+      if (!visited.has(nextMove.toString())) {
+        queue.push([nextMove, [...path, nextMove]]);
+        visited.add(nextMove.toString());
+      }
+    }
+  }
+}
+
+console.log(knightMoves([0, 0], [3, 3]));
